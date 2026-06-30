@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahmad Ridwan | Full-Stack Web Developer</title>
+    <link rel="icon" href="{{ asset('favicon.png?v=2') }}" type="image/png">
     
     <!-- Load Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
