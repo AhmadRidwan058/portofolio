@@ -13,3 +13,6 @@ Route::get('/', function () {
 
     return view('welcome', compact('projects', 'skills'));
 });
+Route::get('/admin', function () {
+    return "Ini halaman admin!";
+});
