@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,12 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans antialiased text-slate-800 bg-slate-50 selection:bg-blue-600 selection:text-white overflow-x-hidden">
-
-    <!-- NAVBAR (Sticky & Glassmorphism) -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div class="container mx-auto px-4 py-3 md:py-4 flex justify-between items-center max-w-6xl relative">
-            <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter text-slate-900 shrink-0">
+    <div class="overflow-x-hidden w-full relative max-w-[100vw]">
+    <!-- NAVBAR (Sticky & Solid) -->
+    <nav class="fixed inset-x-0 z-50 top-0 bg-white shadow-sm border-b border-slate-200">
+        <div class="w-full mx-auto px-4 py-3 md:py-4 flex justify-between items-center max-w-6xl relative">
+            
+            <a href="{{ route('home') }}" class="text-xl md:text-2xl font-bold tracking-tighter text-slate-900 shrink-0">
                 Ahmad<span class="text-blue-600">Ridwan.</span>
             </a>
             
@@ -32,13 +33,15 @@
                     Hubungi
                 </a>
                 
-                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-900 focus:outline-none rounded-lg hover:bg-slate-100 transition-colors">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <button id="mobile-menu-btn" class="block md:hidden w-11 h-11 p-2 text-slate-900 focus:outline-none rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
                 </button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="absolute w-full left-0 top-full bg-white border-b border-slate-200 shadow-2xl transition-all duration-300 ease-in-out opacity-0 -translate-y-5 invisible pointer-events-none md:hidden">
+        <div id="mobile-menu" class="hidden absolute w-full left-0 top-full bg-white border-b border-slate-200 shadow-2xl md:hidden">
             <div class="flex flex-col px-6 py-6 space-y-4 text-base font-bold text-slate-700 text-center">
                 <a href="#about" class="mobile-link block w-full py-2 hover:text-blue-600">Tentang</a>
                 <a href="#skills" class="mobile-link block w-full py-2 hover:text-blue-600">Keahlian</a>
@@ -254,6 +257,8 @@
         </div>
     </footer>
 
+    </div> <!-- Tutup div overflow-x-hidden w-full relative max-w-[100vw] -->
+
     <!-- Load AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -301,31 +306,18 @@
             const links = document.querySelectorAll('.mobile-link');
 
             const toggleMenu = () => {
-                // Animasi buka tutup
-                menu.classList.toggle('opacity-0');
-                menu.classList.toggle('-translate-y-5');
-                menu.classList.toggle('invisible');
-                menu.classList.toggle('pointer-events-none');
-                
-                menu.classList.toggle('opacity-100');
-                menu.classList.toggle('translate-y-0');
-                menu.classList.toggle('visible');
-                menu.classList.toggle('pointer-events-auto');
-                
-                // MENGUNCI SCROLL HALAMAN SAAT MENU TERBUKA
+                menu.classList.toggle('hidden');
                 document.body.classList.toggle('overflow-hidden');
             };
 
-            // Saat tombol ditekan
+            // Klik tombol garis tiga untuk buka/tutup
             btn.addEventListener('click', toggleMenu);
 
-            // Saat link di dalam menu ditekan
+            // Tutup otomatis saat link menu diklik
             links.forEach(link => {
                 link.addEventListener('click', () => {
-                    // Cek jika menu sedang terbuka, maka tutup
-                    if (!menu.classList.contains('opacity-0')) {
-                        toggleMenu();
-                    }
+                    menu.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
                 });
             });
         });

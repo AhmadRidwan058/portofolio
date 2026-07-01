@@ -12,4 +12,4 @@ Route::get('/', function () {
     $skills = Skill::all();
 
     return view('welcome', compact('projects', 'skills'));
-});
+})->name('home');
