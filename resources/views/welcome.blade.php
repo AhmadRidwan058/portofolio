@@ -15,8 +15,8 @@
 <body class="font-sans antialiased text-slate-800 bg-slate-50 selection:bg-blue-600 selection:text-white overflow-x-hidden">
 
     <!-- NAVBAR (Sticky & Glassmorphism) -->
-    <nav class="fixed w-[100vw] z-50 top-0 transition-all duration-300 backdrop-blur-md bg-white/70 border-b border-slate-200/50">
-        <div class="container mx-auto px-4 md:px-6 py-3 md:py-4 flex justify-between items-center max-w-6xl">
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-slate-200">
+        <div class="container mx-auto px-4 py-3 md:py-4 flex justify-between items-center max-w-6xl relative">
             <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter text-slate-900 shrink-0">
                 Ahmad<span class="text-blue-600">Ridwan.</span>
             </a>
@@ -27,9 +27,25 @@
                 <a href="#projects" class="hover:text-blue-600 transition-colors">Karya</a>
             </div>
             
-            <a href="#contact" class="px-4 py-1.5 md:px-5 md:py-2 bg-slate-900 text-white text-xs md:text-sm font-semibold rounded-full hover:bg-blue-600 transition-colors shadow-lg shadow-slate-200 shrink-0">
-                Hubungi
-            </a>
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden md:inline-flex px-5 py-2 bg-slate-900 text-white text-sm font-semibold rounded-full hover:bg-blue-600 transition-colors shadow-sm shrink-0">
+                    Hubungi
+                </a>
+                
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-900 focus:outline-none rounded-lg hover:bg-slate-100 transition-colors">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="absolute w-full left-0 top-full bg-white border-b border-slate-200 shadow-2xl transition-all duration-300 ease-in-out opacity-0 -translate-y-5 invisible pointer-events-none md:hidden">
+            <div class="flex flex-col px-6 py-6 space-y-4 text-base font-bold text-slate-700 text-center">
+                <a href="#about" class="mobile-link block w-full py-2 hover:text-blue-600">Tentang</a>
+                <a href="#skills" class="mobile-link block w-full py-2 hover:text-blue-600">Keahlian</a>
+                <a href="#projects" class="mobile-link block w-full py-2 hover:text-blue-600">Karya</a>
+                <hr class="border-slate-100">
+                <a href="#contact" class="mobile-link block w-full py-2 text-blue-600">Hubungi</a>
+            </div>
         </div>
     </nav>
 
@@ -143,8 +159,15 @@
             
             <div class="flex flex-wrap justify-center gap-4">
                 @foreach($skills as $skill)
+                    @php
+                        // Daftar warna cerah (merah, biru, hijau, kuning, ungu, pink, cyan)
+                        $modernColors = ['bg-red-500', 'bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-pink-500', 'bg-cyan-500'];
+                        // Pilih warna berurutan secara otomatis
+                        $currentColor = $modernColors[$loop->index % count($modernColors)];
+                    @endphp
+
                     <div class="flex items-center gap-3 px-6 py-3 bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 cursor-default group">
-                        <span class="w-3.5 h-3.5 rounded-full shadow-inner group-hover:scale-125 group-hover:animate-pulse transition-transform" style="background-color: {{ $skill->color ?? '#64748b' }}"></span>
+                        <span class="w-3.5 h-3.5 rounded-full shadow-inner group-hover:scale-125 group-hover:animate-pulse transition-transform {{ $currentColor }}"></span>
                         <span class="font-semibold text-slate-700 group-hover:text-slate-900">{{ $skill->name }}</span>
                     </div>
                 @endforeach
@@ -155,12 +178,12 @@
     <!-- PROJECTS SECTION -->
     <section class="py-24 bg-white" id="projects">
         <div class="container mx-auto px-4 max-w-6xl">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12" data-aos="fade-up">
-                <div>
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end text-center md:text-left mb-12 gap-4 md:gap-8" data-aos="fade-up">
+                <div class="w-full md:w-auto">
                     <h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-3">Portofolio</h2>
                     <h3 class="text-3xl font-bold text-slate-900">Karya & Eksperimen</h3>
                 </div>
-                <p class="text-slate-500 mt-4 md:mt-0 max-w-md md:text-right">Aplikasi sistem informasi, manajemen POS bisnis, hingga purwarupa yang saya bangun untuk menyelesaikan masalah dunia nyata.</p>
+                <p class="text-slate-500 mt-2 md:mt-0 max-w-md text-center md:text-right px-2 md:px-0">Aplikasi sistem informasi, manajemen POS bisnis, hingga purwarupa yang saya bangun untuk menyelesaikan masalah dunia nyata.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -271,6 +294,40 @@
 
             // Suruh robot memantau semua class .count-up
             counters.forEach(counter => observer.observe(counter));
+
+            // Logika Mobile Menu
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const links = document.querySelectorAll('.mobile-link');
+
+            const toggleMenu = () => {
+                // Animasi buka tutup
+                menu.classList.toggle('opacity-0');
+                menu.classList.toggle('-translate-y-5');
+                menu.classList.toggle('invisible');
+                menu.classList.toggle('pointer-events-none');
+                
+                menu.classList.toggle('opacity-100');
+                menu.classList.toggle('translate-y-0');
+                menu.classList.toggle('visible');
+                menu.classList.toggle('pointer-events-auto');
+                
+                // MENGUNCI SCROLL HALAMAN SAAT MENU TERBUKA
+                document.body.classList.toggle('overflow-hidden');
+            };
+
+            // Saat tombol ditekan
+            btn.addEventListener('click', toggleMenu);
+
+            // Saat link di dalam menu ditekan
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Cek jika menu sedang terbuka, maka tutup
+                    if (!menu.classList.contains('opacity-0')) {
+                        toggleMenu();
+                    }
+                });
+            });
         });
     </script>
 </body>
